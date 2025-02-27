@@ -3,8 +3,57 @@ import { Users, Heart, Award } from 'lucide-react';
 
 export function About() {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white relative overflow-hidden">
+      {/* Animated Background Shapes */}
+      <motion.div
+        className="absolute top-0 left-0 w-32 h-32 bg-primary opacity-10 rounded-full"
+        animate={{ x: [0, 50, 0], y: [0, 50, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+<motion.div
+        className="absolute top-0 left-0 w-32 h-32 bg-primary opacity-10 rounded-full"
+        animate={{ x: [0, -50, 0], y: [0, -50, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+<motion.div
+        className="absolute top-0 right-0 w-32 h-32 bg-primary opacity-10 rounded-full"
+        animate={{ x: [0, 50, 0], y: [0, 50, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+<motion.div
+        className="absolute top-0 right-0 w-32 h-32 bg-primary opacity-10 rounded-full"
+        animate={{ x: [0, -50, 0], y: [0, -50, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-0 right-0 w-32 h-32 bg-secondary opacity-10 rounded-full"
+        animate={{ x: [0, -50, 0], y: [0, -50, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+    <motion.div
+        className="absolute bottom-0 right-0 w-32 h-32 bg-secondary opacity-10 rounded-full"
+        animate={{ x: [0, 50, 0], y: [0, 50, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+<motion.div
+        className="absolute bottom-0 left-0 w-32 h-32 bg-secondary opacity-10 rounded-full"
+        animate={{ x: [0, -50, 0], y: [0, -50, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+    <motion.div
+        className="absolute bottom-0 left-0 w-32 h-32 bg-secondary opacity-10 rounded-full"
+        animate={{ x: [0, 50, 0], y: [0, 50, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -20,11 +69,19 @@ export function About() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        {/* Core Values Grid */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            visible: { transition: { staggerChildren: 0.2 } },
+            hidden: {}
+          }}
+        >
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-center"
           >
@@ -38,9 +95,7 @@ export function About() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-center"
           >
@@ -54,9 +109,7 @@ export function About() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-center"
           >
@@ -68,22 +121,75 @@ export function About() {
               We envision a future where every student can enjoy affordable, healthy, and comforting meals without compromising on taste or quality.
             </p>
           </motion.div>
-        </div>
+        </motion.div>
 
+        {/* Meet Our Team Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-gray-50 rounded-2xl p-8 md:p-12"
+          className="bg-gray-50 rounded-2xl p-8 md:p-12 mb-16"
         >
-          <h3 className="text-2xl font-display font-bold text-charcoal mb-6">Meet Our Team</h3>
-          <p className="text-gray-600 mb-8">
+          <h3 className="text-2xl font-display font-bold text-charcoal mb-6 text-center">
+            Meet Our Team
+          </h3>
+          <p className="text-gray-600 mb-8 text-center">
             Our team is a blend of culinary experts, tech-savvy professionals, and customer care champions who work tirelessly to ensure every meal not only satisfies hunger but also nourishes the soul.
           </p>
-          <button className="bg-primary text-white px-6 py-3 rounded-full font-medium hover:bg-primary/90 transition-colors">
-            Join Our Journey
-          </button>
+          <div className="flex justify-center">
+            <motion.button whileHover={{ scale: 1.05 }} className="bg-primary text-white px-6 py-3 rounded-full font-medium hover:bg-primary/90 transition-colors">
+              Join Our Journey
+            </motion.button>
+          </div>
+        </motion.div>
+
+        {/* New Section: Our Impact */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="bg-white rounded-2xl p-8 md:p-12"
+        >
+          <h3 className="text-2xl font-display font-bold text-charcoal mb-8 text-center">
+            Our Impact
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.div whileHover={{ scale: 1.05 }} className="text-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-4xl font-bold text-primary mb-2"
+              >
+                1000+
+              </motion.div>
+              <p className="text-gray-600">Meals Delivered</p>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} className="text-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-4xl font-bold text-primary mb-2"
+              >
+                200+
+              </motion.div>
+              <p className="text-gray-600">Home Chefs</p>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} className="text-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-4xl font-bold text-primary mb-2"
+              >
+                95%
+              </motion.div>
+              <p className="text-gray-600">Customer Satisfaction</p>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -1,12 +1,7 @@
-import { motion } from 'framer-motion';
-
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-scroll';
 
-const videos = [
-  'https://player.vimeo.com/external/372567650.sd.mp4?s=ec06e26e8b30dd5694e437ccce577a76fae2d611&profile_id=164&oauth2_token_id=57447761',
-  'https://player.vimeo.com/external/371843480.sd.mp4?s=b87bbce6f755a3f85e138d0e37ef927a93f8f2d2&profile_id=164&oauth2_token_id=57447761',
-  'https://player.vimeo.com/external/371843467.sd.mp4?s=3c5a4937d0f4d01561c23b21d9dd9c4a40a0b5e7&profile_id=164&oauth2_token_id=57447761',
-];
 
 const heroLines = [
   "Craving a taste of home?",
@@ -14,199 +9,266 @@ const heroLines = [
   "Every dish tells a story.",
   "Welcome to Apni Meal – comfort delivered."
 ];
+const navItems = [
+  { name: 'Home', to: 'home' },
+  { name: 'About', to: 'about' },
+  { name: 'Chefs', to: 'chefs' },
+  { name: 'Menu', to: 'menu' },
+  { name: 'Blog', to: 'blog' },
+  { name: 'FAQ', to: 'faq' },
+];
+
+function ImageCarousel() {
+  const carouselImages = [
+    'images/meal1.webp',
+    'images/meal2.webp',
+    'images/meal3.webp'
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex(prev => (prev + 1) % carouselImages.length);
+    }, 4000); // Switch image every 4 seconds
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
+
+  return (
+    <div className="w-full flex justify-center mb-8 relative h-64">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={carouselImages[currentImageIndex]}
+          src={carouselImages[currentImageIndex]}
+          alt="Delicious Meal"
+          className="max-w-xs md:max-w-md h-full object-contain rounded-lg"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.5 }}
+        />
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export function Hero() {
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Typewriter effect for hero text
   useEffect(() => {
     const currentLine = heroLines[currentLineIndex];
-    const typeSpeed = isDeleting ? 30 : 50; // Faster deletion than typing
+    const typeSpeed = isDeleting ? 30 : 50;
 
     if (!isDeleting && displayText === currentLine) {
-      // Pause before starting to delete
       setTimeout(() => setIsDeleting(true), 1500);
       return;
     }
-
     if (isDeleting && displayText === '') {
       setIsDeleting(false);
-      // Move to next line
-      setCurrentLineIndex((prev) => (prev + 1) % heroLines.length);
+      setCurrentLineIndex(prev => (prev + 1) % heroLines.length);
       return;
     }
-
     const timeout = setTimeout(() => {
-      setDisplayText(prev => {
-        if (isDeleting) {
-          return prev.slice(0, -1);
-        }
-        return currentLine.slice(0, prev.length + 1);
-      });
+      setDisplayText(prev =>
+        isDeleting ? prev.slice(0, -1) : currentLine.slice(0, prev.length + 1)
+      );
     }, typeSpeed);
 
     return () => clearTimeout(timeout);
   }, [displayText, isDeleting, currentLineIndex]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
-    }, 8000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div className="relative h-screen bg-charcoal/90">
-      {/* Video Background */}
-      <div className="absolute inset-0 overflow-hidden bg-black/40">
-        {videos.map((video, index) => (
-          <video
-            key={video}
-            src={video}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              index === currentVideoIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
-        ))}
-      </div>
+    <div className="relative h-screen overflow-hidden bg-gradient-to-br from-orange-400 to-red-500">
+      {/* Background Blobs */}
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+        className="absolute top-0 left-0 w-48 h-48 bg-white opacity-20 rounded-full filter blur-2xl"
+      />
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
+        className="absolute bottom-0 right-0 w-48 h-48 bg-white opacity-20 rounded-full filter blur-2xl"
+      />
 
-      {/* Content */}
-      <div className="relative h-full flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:pl-24 pt-32">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-2xl"
+      {/* Decorative elements on left and right with vertical bouncing */}
+      <motion.div
+        initial={{ x: -100, opacity: 0, y: 0 }}
+        animate={{ x: 0, opacity: 1, y: [0, 10, 0] }}
+        transition={{
+          x: { duration: 1, delay: 1, repeat: 0 },
+          y: { duration: 1, delay: 1, repeat: Infinity, repeatType: "reverse" },
+          opacity: { duration: 1, delay: 1 }
+        }}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2"
+      >
+        <img
+          src="https://img.icons8.com/color/96/000000/chef-hat.png"
+          alt="Chef Hat Decoration"
+          className="w-22 h-22"
+        />
+      </motion.div>
+      <motion.div
+        initial={{ x: 100, opacity: 0, y: 0 }}
+        animate={{ x: 0, opacity: 1, y: [0, 10, 0] }}
+        transition={{
+          x: { duration: 1, delay: 1, repeat: 0 },
+          y: { duration: 1, delay: 1, repeat: Infinity, repeatType: "reverse" },
+          opacity: { duration: 1, delay: 1 }
+        }}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2"
+      >
+        <img
+          src="images/spatchula.webp"
+          alt="Utensils Decoration"
+          className="w-24 h-24"
+        />
+      </motion.div>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
+        {/* Image Carousel Above Text */}
+        <ImageCarousel />
+
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center max-w-3xl mx-auto"
+        >
+          <motion.h1
+            className="text-3xl md:text-5xl font-bold text-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
           >
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="inline-block bg-primary/90 text-white px-4 py-1 rounded-full text-sm font-medium mb-4"
-            >
-              First Order 50% OFF
-            </motion.span>
-            <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
-              <span className="min-h-[120px] block">
-                {displayText}
-                <span className="animate-pulse ml-1">|</span>
-              </span>
-              <span className="text-primary">Home-Cooked Magic</span>
-            </h1>
-            <p className="text-xl text-white/90 mb-8">
-              Craving mom's cooking? Our expert home chefs bring authentic flavors right to your hostel doorstep. Hot, fresh, and made with love! 🍱
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-primary text-white px-8 py-3 rounded-full font-medium text-lg hover:bg-primary/90 transition-colors flex items-center justify-center group"
+            {displayText}
+            <span className="animate-pulse">|</span>
+          </motion.h1>
+          <motion.p
+            className="mt-4 text-lg md:text-xl text-white/90"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+          >
+            Authentic home-cooked meals delivered right to your doorstep.
+          </motion.p>
+        </motion.div>
+
+        {/* Call-to-Action Buttons */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="mt-8 flex flex-col sm:flex-row gap-4"
+        >
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-white text-red-500 px-6 py-3 rounded-full font-medium"
+          >
+           <Link
+                to="menu"
+                spy={true}
+                smooth={true}
+                offset={-64}
+                duration={500}
               >
                 Order Now
-                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white text-primary px-8 py-3 rounded-full font-medium text-lg hover:bg-white/90 transition-colors"
-              >
-                Meet Our Chefs
-              </motion.button>
-            </div>
+              </Link>
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-transparent border border-white text-white px-6 py-3 rounded-full font-medium"
+          >
+            <Link
+                to='about'
+                spy={true}
+                smooth={true}
+                offset={-64}
+                duration={500}>
+                  Learn More
+              </Link>
+            
+          </motion.button>
+        </motion.div>
 
-            {/* Stats */}
-            <div className="mt-12 grid grid-cols-3 gap-8">
-              <div className="text-center">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
-                  className="text-3xl font-bold text-white mb-1"
-                >
-                  50+
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
-                  className="text-white/80 text-sm"
-                >
-                  Home Chefs
-                </motion.div>
-              </div>
-              <div className="text-center">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9 }}
-                  className="text-3xl font-bold text-white mb-1"
-                >
-                  4.8
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.1 }}
-                  className="text-white/80 text-sm"
-                >
-                  Rating
-                </motion.div>
-              </div>
-              <div className="text-center">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1 }}
-                  className="text-3xl font-bold text-white mb-1"
-                >
-                  30min
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.2 }}
-                  className="text-white/80 text-sm"
-                >
-                  Avg. Delivery
-                </motion.div>
-              </div>
-            </div>
-          </motion.div>
+        {/* Bouncing Down Arrow */}
+        <motion.div
+          initial={{ y: 0, opacity: 0 }}
+          animate={{ y: 10, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.8, repeat: Infinity, repeatType: "reverse" }}
+          className="absolute bottom-10"
+        >
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+export function Features() {
+  const featuresData = [
+    {
+      title: 'Fresh Ingredients',
+      description: 'We use locally sourced, fresh ingredients to make your meals as delicious as possible.',
+    },
+    {
+      title: 'Expert Chefs',
+      description: 'Our chefs have years of experience preparing authentic home-cooked meals.',
+    },
+    {
+      title: 'Fast Delivery',
+      description: 'Enjoy your meal delivered hot and fresh to your doorstep in record time.',
+    },
+  ];
+
+  return (
+    <div className="py-16 bg-gray-50">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.h2
+          className="text-3xl font-bold text-gray-800 text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          Why Choose Apni Meal?
+        </motion.h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {featuresData.map((feature, idx) => (
+            <motion.div
+              key={idx}
+              className="p-6 bg-white rounded-lg transition"
+              whileHover={{ scale: 1.03 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.2, duration: 0.6 }}
+            >
+              <h3 className="text-xl font-bold mb-2 text-gray-800">{feature.title}</h3>
+              <p className="text-gray-600">{feature.description}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <div className="flex flex-col items-center">
-          <span className="text-white/80 text-sm mb-2">Scroll to explore</span>
-          <motion.div
-            animate={{
-              y: [0, 10, 0],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
-            className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2"
-          >
-            <div className="w-1 h-2 bg-white rounded-full" />
-          </motion.div>
-        </div>
-      </motion.div>
+export default function App() {
+  return (
+    <div>
+      <Hero />
+      <Features />
     </div>
   );
 }
