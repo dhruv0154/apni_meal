@@ -105,7 +105,7 @@ export function Hero() {
           y: { duration: 1, delay: 1, repeat: Infinity, repeatType: "reverse" },
           opacity: { duration: 1, delay: 1 }
         }}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2"
+        className="absolute left-4 top-1/3 transform -translate-y-1/2"
       >
         <img
           src="https://img.icons8.com/color/96/000000/chef-hat.png"
@@ -121,7 +121,7 @@ export function Hero() {
           y: { duration: 1, delay: 1, repeat: Infinity, repeatType: "reverse" },
           opacity: { duration: 1, delay: 1 }
         }}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2"
+        className="absolute right-4 top-1/3 transform -translate-y-1/2"
       >
         <img
           src="images/spatchula.webp"

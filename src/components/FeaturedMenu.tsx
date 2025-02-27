@@ -1,13 +1,13 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Clock,
   Flame,
   Star,
   ArrowLeft,
   ArrowRight,
-} from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
-import { QuickOrderModal } from './QuickOrderModal';
+} from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { QuickOrderModal } from "./QuickOrderModal";
 
 const menuItems = [
   {
@@ -21,7 +21,7 @@ const menuItems = [
     rating: 4.8,
     reviews: 128,
     description:
-      "A complete meal with 3 rotis, dal, rice, 2 sabzi, raita, and dessert",
+      "A complete meal with 3 rotis, dal, rice, 2 sabzi, raita, and dessert. Enjoy a burst of flavors in every bite!",
     tags: ["Bestseller", "Must Try"],
   },
   {
@@ -35,7 +35,7 @@ const menuItems = [
     rating: 4.7,
     reviews: 156,
     description:
-      "2 masala dosas with sambar, coconut chutney, and filter coffee",
+      "2 masala dosas with sambar, coconut chutney, and filter coffee. A delightful combination of crispy and savory.",
     tags: ["Trending"],
   },
   {
@@ -48,7 +48,8 @@ const menuItems = [
     isPopular: false,
     rating: 4.6,
     reviews: 92,
-    description: "Thepla with curry, dal, rice, and kadhi",
+    description:
+      "Thepla served with a flavorful curry, dal, rice, and kadhi. A wholesome meal packed with authentic Gujarati taste.",
     tags: ["New"],
   },
   {
@@ -62,7 +63,7 @@ const menuItems = [
     rating: 4.9,
     reviews: 78,
     description:
-      "Quinoa, grilled chicken, roasted vegetables, and hummus",
+      "A healthy mix of quinoa, grilled chicken, roasted vegetables, and hummus. Perfect for a balanced meal.",
     tags: ["Healthy", "High Protein"],
   },
   {
@@ -76,7 +77,7 @@ const menuItems = [
     rating: 4.5,
     reviews: 67,
     description:
-      "A medley of fresh vegetables with a tangy twist, served with aromatic rice.",
+      "A medley of fresh vegetables with a tangy twist, served with aromatic rice. A feast for both the eyes and the palate.",
     tags: ["Vegetarian"],
   },
   {
@@ -90,14 +91,83 @@ const menuItems = [
     rating: 4.7,
     reviews: 89,
     description:
-      "A hearty bowl of spicy ramen with rich broth and fresh toppings.",
+      "A hearty bowl of spicy ramen with a rich broth, fresh toppings, and a kick of heat. Perfect for ramen lovers.",
     tags: ["Trending", "Spicy"],
   },
+  // You can add more items here as needed.
 ];
+
+// Updated SampleMenuModal Component
+function SampleMenuModal({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+        >
+          <motion.div
+            className="bg-white rounded-xl p-6 shadow-2xl max-w-xl w-full relative max-h-[80vh] overflow-y-auto"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-4 right-4 text-gray-700 hover:text-gray-900 transition-colors"
+              onClick={onClose}
+            >
+              <ArrowLeft className="w-6 h-6" />
+            </button>
+            <h2 className="text-2xl font-bold mb-4">Full Menu</h2>
+            <p className="text-gray-600 mb-4">
+              Explore our complete selection of dishes with detailed
+              descriptions, prices, and chef information.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {menuItems.map((item) => (
+                <div
+                  key={item.name}
+                  className="p-4 border rounded-lg flex flex-col space-y-2"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-32 object-cover rounded-md"
+                  />
+                  <div>
+                    <h3 className="text-lg font-semibold">{item.name}</h3>
+                    <p className="text-sm text-gray-500">Price: ₹{item.price}</p>
+                    <p className="text-sm text-gray-500">Chef: {item.chef}</p>
+                    <p className="text-sm text-gray-500">
+                      Prep Time: {item.prepTime}
+                    </p>
+                  </div>
+                  <p className="text-sm text-gray-600">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 export function FeaturedMenu() {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-  const carouselRef = useRef(null);
+  const [isSampleMenuModalOpen, setIsSampleMenuModalOpen] = useState(false);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
   const [dragWidth, setDragWidth] = useState(0);
 
   useEffect(() => {
@@ -177,7 +247,7 @@ export function FeaturedMenu() {
             <motion.button
               whileHover={{ scale: 1.1 }}
               onClick={scrollLeft}
-              className="absolute left-0 top-1/2 z-20 p-2 bg-white rounded-full shadow-md"
+              className="absolute left-[-50px] top-1/2 z-20 p-2 bg-white rounded-full shadow-md"
             >
               <ArrowLeft className="w-6 h-6 text-primary" />
             </motion.button>
@@ -186,7 +256,7 @@ export function FeaturedMenu() {
             <motion.button
               whileHover={{ scale: 1.1 }}
               onClick={scrollRight}
-              className="absolute right-0 top-1/2 z-20 p-2 bg-white rounded-full shadow-md"
+              className="absolute right-[-50px] top-1/2 z-20 p-2 bg-white rounded-full shadow-md"
             >
               <ArrowRight className="w-6 h-6 text-primary" />
             </motion.button>
@@ -285,7 +355,7 @@ export function FeaturedMenu() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setIsOrderModalOpen(true)}
+              onClick={() => setIsSampleMenuModalOpen(true)}
               className="bg-white text-primary px-8 py-3 rounded-full font-medium text-lg hover:bg-white/90 transition-colors"
             >
               View Full Menu
@@ -295,6 +365,10 @@ export function FeaturedMenu() {
         <QuickOrderModal
           isOpen={isOrderModalOpen}
           onClose={() => setIsOrderModalOpen(false)}
+        />
+        <SampleMenuModal
+          isOpen={isSampleMenuModalOpen}
+          onClose={() => setIsSampleMenuModalOpen(false)}
         />
       </section>
     </>
