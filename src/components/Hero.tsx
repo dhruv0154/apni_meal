@@ -20,9 +20,9 @@ const navItems = [
 
 function ImageCarousel() {
   const carouselImages = [
-    'images/meal1.webp',
-    'images/meal2.webp',
-    'images/meal3.webp'
+    'https://imgs.search.brave.com/V1HgSBzRv62vRoWgznkSoLuJM9-1EDht-kx6K-jcjHA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMi9NZWFs/LVBORy1QaG90by5w/bmc',
+    'https://imgs.search.brave.com/8SumRmaDXyU6Su7OBRez3S4Oy6qNn-tKFTZfGLlVXJI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMi9IZWFs/dGh5LU1lYWwtUE5H/LnBuZw',
+    'https://imgs.search.brave.com/WRScD1RaAOwXRKLHoC3k7sZriDjlSvH6mZYuyNDSqmo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wbmd0/ZWFtLmNvbS9pbWFn/ZXMvbWVhbC1wbmct/NzMweDc1MV9iY2Iz/OTgyMl90cmFuc3Bh/cmVudC5wbmc'
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -124,7 +124,7 @@ export function Hero() {
         className="absolute right-4 top-1/3 transform -translate-y-1/2"
       >
         <img
-          src="images/spatchula.webp"
+          src="https://imgs.search.brave.com/R3InJ0w7FDy5SKx_OWTMt6aC5xIWV8IEtWJnp7QDbHc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudmV4ZWxzLmNv/bS9tZWRpYS91c2Vy/cy8zLzI0MTgzNC9p/c29sYXRlZC9wcmV2/aWV3Lzk0NzZjOTk0/OTEyNTMyMWUzNjEx/ZGRhYTMwMjg0Yjk5/LXNwYXR1bGEtY29s/b3Itc3Ryb2tlLnBu/Zw"
           alt="Utensils Decoration"
           className="w-24 h-24"
         />

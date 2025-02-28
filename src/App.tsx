@@ -6,7 +6,7 @@ import { PlanDetails } from './components/PlanDetails';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/apni_meal/">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/plan-details" element={<PlanDetails />} />
