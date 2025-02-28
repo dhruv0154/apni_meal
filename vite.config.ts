@@ -1,11 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  base: '/apni_meal/',
+  base: '/apni_meal/', // Ensure this matches your GitHub repo name
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
+  },
+  build: {
+    outDir: 'dist', // Ensure correct output folder
+  },
+  server: {
+    open: true, // Opens the app in the browser when running locally
   },
 });
